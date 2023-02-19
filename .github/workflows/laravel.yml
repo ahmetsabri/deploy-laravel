@@ -49,12 +49,13 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Deploy to Vultr server
+    - name: Deploy
       uses: appleboy/ssh-action@master
       with:
         host: 136.244.94.130
         username: root
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        script: |
-          pwd
+        script: cd /var/www/prod && git pull origin main
+
+
