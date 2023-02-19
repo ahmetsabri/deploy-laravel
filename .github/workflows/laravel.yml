@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dev
 
 jobs:
   build:
@@ -56,6 +57,6 @@ jobs:
         username: root
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        script: cd /var/www/prod/deploy-laravel && git pull origin main
+        script: cd /var/www/prod/deploy-laravel && git pull origin main && yes | composer install --no-progress --no-suggest && php artisan migrate --force
 
 
