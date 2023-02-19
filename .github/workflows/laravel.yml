@@ -56,6 +56,6 @@ jobs:
         username: root
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        script: cd /var/www/prod && git pull origin main
+        script: cd /var/www/prod/deploy-laravel && git pull origin main
 
 
