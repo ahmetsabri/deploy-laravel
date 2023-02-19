@@ -37,9 +37,10 @@ jobs:
     - name: Run tests
       run: php artisan test
 
-  deploy:
+  deploy_main:
     needs: build
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
 
     steps:
     - name: Checkout code
@@ -58,5 +59,28 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: cd /var/www/prod/deploy-laravel && git pull origin main && yes | composer install --no-progress --no-suggest && php artisan migrate --force
+
+  deploy_dev:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/dev'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.4.1
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: 136.244.94.130
+        username: root
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: cd /var/www/prod/deploy-laravel && git checkout dev && git pull origin dev && yes | composer install --no-progress --no-suggest && php artisan migrate --force && php artisan optimize
 
 
