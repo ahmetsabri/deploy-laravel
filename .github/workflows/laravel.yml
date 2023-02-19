@@ -81,6 +81,6 @@ jobs:
         username: root
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        script: cd /var/www/prod/deploy-laravel && git checkout dev && git pull origin dev && yes | composer install --no-progress --no-suggest && php artisan migrate --force && php artisan optimize
+        script: cd /var/www/test/deploy-laravel && git checkout dev && git pull origin dev && yes | composer install --no-progress && php artisan migrate --force && php artisan optimize
 
 
